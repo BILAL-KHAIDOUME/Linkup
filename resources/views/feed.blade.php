@@ -64,26 +64,26 @@
       </div>
     </div>
 
+    @foreach ($posts as $post )
+      
+    
     <!-- Feed placeholder notice -->
     <div class="border border-dashed border-line rounded-xl p-6 text-center">
-      <p class="text-sm text-slate">Posts will be loaded and rendered here.</p>
-      <p class="text-xs text-slate/70 mt-1">This area is wired up next — composer above already has the markup ready to wire to your post-creation logic.</p>
-    </div>
-
-    <!-- Example post card (static, for reference) -->
-    <article class="bg-white border border-line rounded-xl p-4">
+      <article class="bg-white border border-line rounded-xl p-4">
       <div class="flex items-start gap-3">
-        <div class="w-10 h-10 rounded-full bg-ember/90 text-white font-semibold text-sm flex items-center justify-center shrink-0">SK</div>
+        <div class="w-10 h-10 rounded-full bg-ember/90 text-white font-semibold text-sm flex items-center justify-center shrink-0">
+        <img src="{{ $post->user->image_url ?? 'https://via.placeholder.com/80' }}" alt="">
+        </div>
         <div class="flex-1 min-w-0">
-          <p class="font-semibold text-sm">Sara Khalil</p>
-          <p class="text-xs text-slate">Backend Developer at Devra · 2h</p>
+          <p class="font-semibold text-sm">{{ $post->user->name }}</p>
+          <p class="text-xs text-slate">{{ $post->user->headline }}</p>
         </div>
         <button class="text-slate hover:text-ink">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>
         </button>
       </div>
       <p class="text-sm mt-3 leading-relaxed">
-        Just shipped a FEFO-based stock rotation feature for a pharmacy management system — color-coded expiry alerts made the QA team's day a lot easier. Small details, big impact.
+       {{ $post->content }}
       </p>
       <div class="flex items-center justify-between mt-4 pt-3 border-t border-line text-sm text-slate">
         <button class="flex items-center gap-1.5 hover:text-ember transition">
@@ -98,9 +98,15 @@
           <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
           Share
         </button>
+        <small>{{ $post->created_at->diffForHumans() }}</small>
+
       </div>
     </article>
 
+    </div>
+@endforeach
+    <!-- Example post card (static, for reference) -->
+    
   </main>
 
   <!-- Right sidebar: suggestions -->
