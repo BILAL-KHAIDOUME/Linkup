@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('company');
             $table->string('image_url');
             $table->rememberToken();
-             $table->timestamps();
+            $table->timestamps();
             
         });
 
