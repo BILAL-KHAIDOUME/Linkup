@@ -89,10 +89,11 @@
       <h1 class="font-display text-3xl font-semibold tracking-tight">Welcome back</h1>
       <p class="mt-2 text-slate text-sm">Sign in to continue to your feed.</p>
 
-      <form class="mt-8 space-y-4" action="#" method="POST">
+      <form class="mt-8 space-y-4" action="{{ route('login') }}" method="POST">
+        @csrf
         <div>
           <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email address</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com"
+          <input type="email" id="email" name="email" placeholder="you@company.com" required value="{{ old('email') }}"
             class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-ember/40 focus:border-ember transition">
         </div>
 
@@ -134,7 +135,7 @@
       </div>
 
       <p class="mt-8 text-center text-sm text-slate">
-        New to LinkUp? <a href="register.html" class="text-ink font-medium hover:text-ember transition">Create an account</a>
+        New to LinkUp? <a href="{{ route('show.register') }}" class="text-ink font-medium hover:text-ember transition">Create an account</a>
       </p>
     </div>
   </div>

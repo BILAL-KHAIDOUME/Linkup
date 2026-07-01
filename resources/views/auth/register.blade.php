@@ -101,23 +101,20 @@
       <h1 class="font-display text-3xl font-semibold tracking-tight">Create your account</h1>
       <p class="mt-2 text-slate text-sm">Free to join. Takes less than a minute.</p>
 
-      <form class="mt-8 space-y-4" action="#" method="POST">
+      <form class="mt-8 space-y-4" action="{{ route('register') }}" method="POST">
+        @csrf
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label for="first_name" class="block text-sm font-medium text-ink mb-1.5">First name</label>
-            <input type="text" id="first_name" name="first_name" placeholder="Bilal"
+            <label for="name" class="block text-sm font-medium text-ink mb-1.5">name</label>
+            <input type="text" id="name" name="name" placeholder="Bilal" required value="{{ old('name') }}"
               class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-ember/40 focus:border-ember transition">
           </div>
-          <div>
-            <label for="last_name" class="block text-sm font-medium text-ink mb-1.5">Last name</label>
-            <input type="text" id="last_name" name="last_name" placeholder="El Amrani"
-              class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-ember/40 focus:border-ember transition">
-          </div>
+          
         </div>
 
         <div>
           <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email address</label>
-          <input type="email" id="email" name="email" placeholder="you@company.com"
+          <input type="email" id="email" name="email" placeholder="you@company.com" required value="{{ old('email') }}"
             class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-ember/40 focus:border-ember transition">
         </div>
 
@@ -128,10 +125,11 @@
         </div>
 
         <div>
-          <label for="password_confirmation" class="block text-sm font-medium text-ink mb-1.5">Confirm password</label>
-          <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Re-enter your password"
+          <label for="password" class="block text-sm font-medium text-ink mb-1.5">Confirm Password</label>
+          <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password"
             class="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm placeholder:text-slate/50 focus:outline-none focus:ring-2 focus:ring-ember/40 focus:border-ember transition">
         </div>
+        
 
         <label class="flex items-start gap-2.5 pt-1">
           <input type="checkbox" class="mt-0.5 w-4 h-4 rounded border-line text-ember focus:ring-ember/40">
@@ -162,7 +160,7 @@
       </div>
 
       <p class="mt-8 text-center text-sm text-slate">
-        Already on LinkUp? <a href="login.html" class="text-ink font-medium hover:text-ember transition">Sign in</a>
+        Already on LinkUp? <a href="{{ route('show.login') }}" class="text-ink font-medium hover:text-ember transition">Sign in</a>
       </p>
     </div>
   </div>
