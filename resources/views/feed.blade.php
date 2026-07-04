@@ -7,15 +7,13 @@
             <div class="h-14 bg-gradient-to-r from-[#0a66c2] to-[#57a5e0]"></div>
             <div class="px-4 pb-3 text-center -mt-8">
                 <a href="{{ route('profile') }}">
-                    <div
-                        class="w-16 h-16 mx-auto rounded-full bg-[#0a66c2] border-2 border-white text-white font-semibold text-lg flex items-center justify-center shadow">
-                        BE
-                    </div>
-                    <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
-                    <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline }}</p>
-
-                    
-                </a>
+    <div class="w-16 h-16 mx-auto rounded-full border-2 border-white shadow overflow-hidden">
+        <img src="{{ Auth::user()->image_url }}" alt="{{ Auth::user()->name }}"
+            class="w-full h-full object-cover">
+    </div>
+    <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
+    <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline }}</p>
+</a>
             </div>
             <div class="h-px bg-[rgba(0,0,0,0.08)]"></div>
             <div class="px-4 py-3 space-y-2">
@@ -325,7 +323,7 @@
     </aside>
 
 
-    
+
     <script>
     function togglePostMenu(button) {
         const dropdown = button.nextElementSibling;
