@@ -6,11 +6,15 @@
         <div class="bg-white border border-[rgba(0,0,0,0.08)] rounded-lg overflow-hidden shadow-sm sticky top-20">
             <div class="h-14 bg-gradient-to-r from-[#0a66c2] to-[#57a5e0]"></div>
             <div class="px-4 pb-4 text-center -mt-8">
-                <div class="w-16 h-16 mx-auto rounded-full bg-[#0a66c2] border-2 border-white text-white font-semibold text-lg flex items-center justify-center shadow">
-                    BE
-                </div>
-                <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
-                <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline ?? 'No headline set' }}</p>
+                <a href="{{ route('profile') }}">
+
+                    <div class="w-16 h-16 mx-auto rounded-full bg-[#0a66c2] border-2 border-white text-white font-semibold text-lg flex items-center justify-center shadow">
+                        BE
+                    </div>
+                    <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
+                    <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline ?? 'No headline set' }}</p>
+
+                </a>
             </div>
             <div class="h-px bg-[rgba(0,0,0,0.08)]"></div>
             <div class="p-3 text-center">

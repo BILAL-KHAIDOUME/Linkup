@@ -38,7 +38,7 @@
 <header class="sticky top-0 z-30 bg-white border-b border-line">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-2">
 
-    <a href="feed.html" class="flex items-center shrink-0">
+    <a href="{{ route('feed') }}" class="flex items-center shrink-0">
       <div class="w-9 h-9 rounded bg-brand text-white font-black text-xl flex items-center justify-center leading-none">in</div>
     </a>
 

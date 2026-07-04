@@ -9,11 +9,15 @@ Route::middleware(['is_auth'])->group(function () {
     Route::get('/feed', [PostController::class, 'index'])->name('feed');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('/createpost', [PostController::class, 'store'])->name('createpost');
- 
 
-Route::get('/profile', [ProfileController::class, "edit"])->name('profile');
 
-Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile', [ProfileController::class, "show"])->name('profile');
+    Route::get('/profileEdit', [ProfileController::class, "edit"])->name('profileEdit');
+
+    
+
+
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 Route::middleware(['guest'])->group(function () {

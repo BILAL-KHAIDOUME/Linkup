@@ -40,4 +40,33 @@ class PostController extends Controller
 
         return redirect()->back();
     }
+
+    // public function edit(Post $post)
+    // {
+    //     $this->authorize('update', $post);
+
+    //     return view('posts.edit', compact('post'));
+    // }
+
+    // public function update(Request $request, Post $post)
+    // {
+    //     $this->authorize('update', $post);
+
+    //     $validated = $request->validate([
+    //         'content' => 'required|string|max:5000',
+    //     ]);
+
+    //     $post->update($validated);
+
+    //     return redirect()->route('feed');
+    // }
+
+    // public function destroy(Post $post)
+    // {
+    //     $this->authorize('delete', $post);
+
+    //     $post->delete();
+
+    //     return redirect()->route('feed');
+    // }
 }

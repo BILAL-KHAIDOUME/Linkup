@@ -25,7 +25,10 @@ class EditProfileRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'headline' => 'required|string|max:255',
-            'company' => 'required|string|max:255'
+            'company' => 'required|string|max:255',
+            'profile_photo' => 'nullable|image|max:2048',
+            
+
 
         ];
     }
