@@ -14,6 +14,9 @@ Route::middleware(['is_auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, "show"])->name('profile');
     Route::get('/profileEdit', [ProfileController::class, "edit"])->name('profileEdit');
 
+    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+    Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     
 
 

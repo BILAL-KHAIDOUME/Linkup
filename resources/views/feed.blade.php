@@ -152,13 +152,35 @@
                             </svg>
                         </p>
                     </div>
-                    <button class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="5" r="1" />
-                            <circle cx="12" cy="12" r="1" />
-                            <circle cx="12" cy="19" r="1" />
-                        </svg>
-                    </button>
+
+                    @can('update', $post)
+    <div class="relative post-menu">
+        <button type="button" onclick="togglePostMenu(this)"
+            class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="5" r="1" />
+                <circle cx="12" cy="12" r="1" />
+                <circle cx="12" cy="19" r="1" />
+            </svg>
+        </button>
+
+        <div class="post-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
+            <a href="{{ route('posts.edit', $post) }}"
+                class="block px-4 py-2 text-sm text-[rgba(0,0,0,0.8)] hover:bg-[rgba(0,0,0,0.05)]">
+                Modifier
+            </a>
+            <form action="{{ route('posts.destroy', $post) }}" method="POST"
+                onsubmit="return confirm('Supprimer ce post ?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                    Supprimer
+                </button>
+            </form>
+        </div>
+    </div>
+@endcan
                 </div>
 
                 <p class="text-sm mt-3 leading-relaxed whitespace-pre-line">
@@ -301,4 +323,23 @@
                 more</a>
         </div>
     </aside>
+
+    <script>
+    function togglePostMenu(button) {
+        const dropdown = button.nextElementSibling;
+        const isOpen = !dropdown.classList.contains('hidden');
+
+        document.querySelectorAll('.post-menu-dropdown').forEach(el => el.classList.add('hidden'));
+
+        if (!isOpen) {
+            dropdown.classList.remove('hidden');
+        }
+    }
+
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('.post-menu')) {
+            document.querySelectorAll('.post-menu-dropdown').forEach(el => el.classList.add('hidden'));
+        }
+    });
+</script>
 @endsection
