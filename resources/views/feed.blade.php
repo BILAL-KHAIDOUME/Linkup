@@ -197,7 +197,7 @@
                         </span>
                         24
                     </span>
-                    <span>6 comments</span>
+                    <span>{{ count($post->comments) }} Comments</span>
                 </div>
 
                 <div
