@@ -18,7 +18,7 @@ class PostController extends Controller
 
 
 
-        $posts = Post::with('user')->latest()->get();
+        $posts = Post::with(['user' , 'comments.user'])->latest()->get();
 
 
         // return View::make("view")->with(array("user" => $user, "posts" => $posts));

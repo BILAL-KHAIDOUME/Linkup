@@ -7,13 +7,13 @@
             <div class="h-14 bg-gradient-to-r from-[#0a66c2] to-[#57a5e0]"></div>
             <div class="px-4 pb-3 text-center -mt-8">
                 <a href="{{ route('profile') }}">
-    <div class="w-16 h-16 mx-auto rounded-full border-2 border-white shadow overflow-hidden">
-        <img src="{{ Auth::user()->image_url }}" alt="{{ Auth::user()->name }}"
-            class="w-full h-full object-cover">
-    </div>
-    <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
-    <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline }}</p>
-</a>
+                    <div class="w-16 h-16 mx-auto rounded-full border-2 border-white shadow overflow-hidden">
+                        <img src="{{ Auth::user()->image_url }}" alt="{{ Auth::user()->name }}"
+                            class="w-full h-full object-cover">
+                    </div>
+                    <p class="mt-2 font-semibold text-base leading-tight">{{ Auth::user()->name }}</p>
+                    <p class="text-xs text-[rgba(0,0,0,0.6)] leading-snug mt-1 px-2">{{ Auth::user()->headline }}</p>
+                </a>
             </div>
             <div class="h-px bg-[rgba(0,0,0,0.08)]"></div>
             <div class="px-4 py-3 space-y-2">
@@ -120,7 +120,7 @@
                     </ul>
                 @endif
             </form>
-            
+
         </div>
 
         @foreach ($posts as $post)
@@ -132,12 +132,12 @@
                     <img src="{{ $post->user->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
                         class="w-12 h-12 rounded-full object-cover shrink-0 bg-[#0a66c2]">
                     <div class="flex-1 min-w-0">
-                       
-                            <p class="font-semibold text-sm leading-tight truncate">
-                                {{ $post->user_id ? $post->user->name : 'user' }}</p>
+
+                        <p class="font-semibold text-sm leading-tight truncate">
+                            {{ $post->user_id ? $post->user->name : 'user' }}</p>
 
 
-                       
+
                         <p class="text-xs text-[rgba(0,0,0,0.6)] leading-tight truncate">
                             {{ $post->user_id ? $post->user->headline : 'no headline' }}</p>
                         <p class="text-xs text-[rgba(0,0,0,0.6)] flex items-center gap-1 mt-0.5">
@@ -152,33 +152,35 @@
                     </div>
 
                     @can('update', $post)
-    <div class="relative post-menu">
-        <button type="button" onclick="togglePostMenu(this)"
-            class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <circle cx="12" cy="5" r="1" />
-                <circle cx="12" cy="12" r="1" />
-                <circle cx="12" cy="19" r="1" />
-            </svg>
-        </button>
+                        <div class="relative post-menu">
+                            <button type="button" onclick="togglePostMenu(this)"
+                                class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="5" r="1" />
+                                    <circle cx="12" cy="12" r="1" />
+                                    <circle cx="12" cy="19" r="1" />
+                                </svg>
+                            </button>
 
-        <div class="post-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
-            <a href="{{ route('posts.edit', $post) }}"
-                class="block px-4 py-2 text-sm text-[rgba(0,0,0,0.8)] hover:bg-[rgba(0,0,0,0.05)]">
-                Modifier
-            </a>
-            <form action="{{ route('posts.destroy', $post) }}" method="POST"
-                onsubmit="return confirm('Supprimer ce post ?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit"
-                    class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                    Supprimer
-                </button>
-            </form>
-        </div>
-    </div>
-@endcan
+                            <div
+                                class="post-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
+                                <a href="{{ route('posts.edit', $post) }}"
+                                    class="block px-4 py-2 text-sm text-[rgba(0,0,0,0.8)] hover:bg-[rgba(0,0,0,0.05)]">
+                                    Modifier
+                                </a>
+                                <form action="{{ route('posts.destroy', $post) }}" method="POST"
+                                    onsubmit="return confirm('Supprimer ce post ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                        Supprimer
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    @endcan
                 </div>
 
                 <p class="text-sm mt-3 leading-relaxed whitespace-pre-line">
@@ -207,7 +209,7 @@
                         </svg>
                         <span class="hidden sm:inline">Like</span>
                     </button>
-                    <button
+                    <button type="button" onclick="toggleComments({{ $post->id }})"
                         class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path
@@ -229,10 +231,40 @@
                         </svg>
                         <span class="hidden sm:inline">Send</span>
                     </button>
+                    <div class="mt-3 space-y-2">
+                        @foreach ($post->comments as $comment)
+                            <div class="flex items-start gap-2">
+                                <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/80' }}"
+                                    alt="" class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
+                                <div class="bg-[rgba(0,0,0,0.05)] rounded-2xl px-3 py-2 text-sm flex-1">
+                                    <p class="font-semibold text-xs">{{ $comment->user->name }}</p>
+                                    <p>{{ $comment->content }}</p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
+
+                <div id="comment-box-{{ $post->id }}" class="hidden mt-3 pt-3 border-t border-[rgba(0,0,0,0.08)]">
+                    <form action="{{ route('AddComment' , $post) }}" method="POST" class="flex items-start gap-2">
+                        @csrf
+                        <img src="{{ auth()->user()->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
+                            class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
+                        <div class="flex-1">
+                            <textarea name="content" rows="1" placeholder="Add a comment..."
+                                class="w-full text-sm border border-[rgba(0,0,0,0.15)] rounded-full px-3 py-1.5 resize-none focus:outline-none focus:ring-1 focus:ring-[#0a66c2]"
+                                oninput="this.style.height='auto'; this.style.height=this.scrollHeight+'px';"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="text-sm font-semibold text-[#0a66c2] hover:bg-[rgba(10,102,194,0.1)] px-3 py-1.5 rounded-full transition">
+                            Post
+                        </button>
+                    </form>
+
             </article>
         @endforeach
     </main>
+
 
     <!-- Right sidebar: suggestions -->
     <aside class="hidden lg:block space-y-2 font-sans text-ink">
@@ -325,21 +357,26 @@
 
 
     <script>
-    function togglePostMenu(button) {
-        const dropdown = button.nextElementSibling;
-        const isOpen = !dropdown.classList.contains('hidden');
+        function togglePostMenu(button) {
+            const dropdown = button.nextElementSibling;
+            const isOpen = !dropdown.classList.contains('hidden');
 
-        document.querySelectorAll('.post-menu-dropdown').forEach(el => el.classList.add('hidden'));
-
-        if (!isOpen) {
-            dropdown.classList.remove('hidden');
-        }
-    }
-
-    document.addEventListener('click', function (event) {
-        if (!event.target.closest('.post-menu')) {
             document.querySelectorAll('.post-menu-dropdown').forEach(el => el.classList.add('hidden'));
+
+            if (!isOpen) {
+                dropdown.classList.remove('hidden');
+            }
         }
-    });
-</script>
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.post-menu')) {
+                document.querySelectorAll('.post-menu-dropdown').forEach(el => el.classList.add('hidden'));
+            }
+        });
+
+        function toggleComments(postId) {
+            const box = document.getElementById(`comment-box-${postId}`);
+            box.classList.toggle('hidden');
+        }
+    </script>
 @endsection

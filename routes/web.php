@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,13 @@ Route::middleware(['is_auth'])->group(function () {
 
 
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::post('/SubmitComments/{post}', [CommentController::class, 'store'])->name('AddComment');
+    // Route::get('/feed/Comments', [CommentController::class, 'show']);
+
+
+
+
 });
 
 Route::middleware(['guest'])->group(function () {
