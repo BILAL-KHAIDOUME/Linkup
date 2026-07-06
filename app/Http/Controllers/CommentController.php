@@ -40,12 +40,7 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
-    {
-        $comments = Comment::all();
-
-        return view('comments.index', compact('comments'));
-    }
+    public function show() {}
 
     /**
      * Show the form for editing the specified resource.
@@ -68,8 +63,9 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete', $comment);
+        $comment->delete();
+
+        return redirect()->route('feed');
     }
 }
-
-

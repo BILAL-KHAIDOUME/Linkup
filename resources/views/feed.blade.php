@@ -231,22 +231,70 @@
                         </svg>
                         <span class="hidden sm:inline">Send</span>
                     </button>
-                    <div class="mt-3 space-y-2">
+                    <div class="mt-3 space-y-2 ">
                         @foreach ($post->comments as $comment)
                             <div class="flex items-start gap-2">
                                 <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/80' }}"
                                     alt="" class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
-                                <div class="bg-[rgba(0,0,0,0.05)] rounded-2xl px-3 py-2 text-sm flex-1">
-                                    <p class="font-semibold text-xs">{{ $comment->user->name }}</p>
-                                    <p>{{ $comment->content }}</p>
+                                <div class="bg-[rgba(0,0,0,0.05)] rounded-2xl px-3 py-2 text-sm flex">
+                                    <div>
+                                        <p class="font-semibold text-xs">{{ $comment->user->name }}</p>
+                                        <p>{{ $comment->content }}</p>
+
+                                    </div>
+
+                                    <div>
+
+                                        {{-- @can('update', $post) --}}
+                                        @can('delete' , $comment)
+                                            <div class="relative comment-menu">
+                                                <button type="button" onclick="toggleCommentMenu(this)"
+                                                    class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
+                                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="5" r="1" />
+                                                        <circle cx="12" cy="12" r="1" />
+                                                        <circle cx="12" cy="19" r="1" />
+                                                    </svg>
+                                                </button>
+    
+                                                <div
+                                                    class="comment-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
+                                                    
+                                                        
+                                                    
+                                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST"
+                                                        onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                            Supprimer
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        @endcan
+                                    </div>
                                 </div>
+                                {{-- @can('delete', $comment)
+                                <form action="{{ route('comments.destroy', $comment) }}" method="POST"
+                                    onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                        Supprimer
+                                    </button>
+                                </form>
+                                @endcan --}}
                             </div>
                         @endforeach
                     </div>
                 </div>
 
                 <div id="comment-box-{{ $post->id }}" class="hidden mt-3 pt-3 border-t border-[rgba(0,0,0,0.08)]">
-                    <form action="{{ route('AddComment' , $post) }}" method="POST" class="flex items-start gap-2">
+                    <form action="{{ route('AddComment', $post) }}" method="POST" class="flex items-start gap-2">
                         @csrf
                         <img src="{{ auth()->user()->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
                             class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
@@ -378,7 +426,22 @@
             const box = document.getElementById(`comment-box-${postId}`);
             box.classList.toggle('hidden');
         }
+
+        function toggleCommentMenu(button) {
+            const dropdown = button.nextElementSibling;
+            const isOpen = !dropdown.classList.contains('hidden');
+
+            document.querySelectorAll('.comment-menu-dropdown').forEach(el => el.classList.add('hidden'));
+
+            if (!isOpen) {
+                dropdown.classList.remove('hidden');
+            }
+        }
+
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.comment-menu')) {
+                document.querySelectorAll('.comment-menu-dropdown').forEach(el => el.classList.add('hidden'));
+            }
+        });
     </script>
 @endsection
-
-

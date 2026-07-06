@@ -24,7 +24,8 @@ Route::middleware(['is_auth'])->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::post('/SubmitComments/{post}', [CommentController::class, 'store'])->name('AddComment');
-    // Route::get('/feed/Comments', [CommentController::class, 'show']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+
 
 
 
