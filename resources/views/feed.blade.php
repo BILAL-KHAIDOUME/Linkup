@@ -6,7 +6,7 @@
         <div class="bg-white border border-[rgba(0,0,0,0.08)] rounded-lg overflow-hidden shadow-sm">
             <div class="h-14 bg-gradient-to-r from-[#0a66c2] to-[#57a5e0]"></div>
             <div class="px-4 pb-3 text-center -mt-8">
-                <a href="{{ route('profile') }}">
+                <a href="{{ route('profile.show' , Auth::user()) }}">
                     <div class="w-16 h-16 mx-auto rounded-full border-2 border-white shadow overflow-hidden">
                         <img src="{{ Auth::user()->image_url }}" alt="{{ Auth::user()->name }}"
                             class="w-full h-full object-cover">
@@ -129,27 +129,31 @@
             <article
                 class="bg-white border border-[rgba(0,0,0,0.08)] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-start gap-2">
-                    <img src="{{ $post->user->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
-                        class="w-12 h-12 rounded-full object-cover shrink-0 bg-[#0a66c2]">
-                    <div class="flex-1 min-w-0">
-
-                        <p class="font-semibold text-sm leading-tight truncate">
-                            {{ $post->user_id ? $post->user->name : 'user' }}</p>
-
-
-
-                        <p class="text-xs text-[rgba(0,0,0,0.6)] leading-tight truncate">
-                            {{ $post->user_id ? $post->user->headline : 'no headline' }}</p>
-                        <p class="text-xs text-[rgba(0,0,0,0.6)] flex items-center gap-1 mt-0.5">
-                            <span>{{ $post->created_at->diffForHumans() }}</span>
-                            <span>&middot;</span>
-                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z" />
-                            </svg>
-                        </p>
-                    </div>
+                    <a href="{{ route('profile.show', $post->user) }}" class="flex items-center gap-3 group">
+    
+                        <img src="{{ $post->user->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
+                            class="w-12 h-12 rounded-full object-cover shrink-0 bg-[#0a66c2]">
+                        <div class="flex-1 min-w-0">
+    
+                            <p class="font-semibold text-sm leading-tight truncate">
+                                {{ $post->user_id ? $post->user->name : 'user' }}</p>
+    
+    
+    
+                            <p class="text-xs text-[rgba(0,0,0,0.6)] leading-tight truncate">
+                                {{ $post->user_id ? $post->user->headline : 'no headline' }}</p>
+                            <p class="text-xs text-[rgba(0,0,0,0.6)] flex items-center gap-1 mt-0.5">
+                                <span>{{ $post->created_at->diffForHumans() }}</span>
+                                <span>&middot;</span>
+                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <path d="M2 12h20M12 2a15 15 0 010 20 15 15 0 010-20z" />
+                                </svg>
+                            </p>
+                        </div>
+                        
+                    </a>
 
                     @can('update', $post)
                         <div class="relative post-menu">

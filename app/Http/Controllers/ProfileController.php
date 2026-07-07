@@ -9,10 +9,17 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function show() {
+    public function show(User $user)
+    {
+        $posts = $user->posts()
+            ->with('user') 
+            ->latest()
+            ->get();
 
-    
-      return View('profile.profile');
+        return view('profile.profile', [
+            'profileUser' => $user,
+            'posts' => $posts,
+        ]);
     }
 
     public function edit()
@@ -22,24 +29,23 @@ class ProfileController extends Controller
 
 
 
-    public function update(EditProfileRequest $request, User $user){
+    public function update(EditProfileRequest $request, User $user)
+    {
         $user = $request->user();
         $validated = $request->validated();
         // dd('validated data:', $validated, 'user before update:', $user->toArray());
 
         if ($request->hasFile('profile_photo')) {
-        $image = $request->file('profile_photo');
-        $imagename = time() . '.' . $image->extension();
-        $image->move(public_path('images'), $imagename);
-        // $validated['image_url'] = $imagename;
-        $validated['image_url'] = asset('images/' . $imagename);
-    }
+            $image = $request->file('profile_photo');
+            $imagename = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imagename);
+            // $validated['image_url'] = $imagename;
+            $validated['image_url'] = asset('images/' . $imagename);
+        }
 
         // User::find(auth()->user()->id)->update([$validated]);
         $user->update($validated);
 
         return redirect()->route('feed');
-
-        
     }
 }

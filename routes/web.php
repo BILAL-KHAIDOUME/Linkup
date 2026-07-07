@@ -13,7 +13,7 @@ Route::middleware(['is_auth'])->group(function () {
     Route::post('/createpost', [PostController::class, 'store'])->name('createpost');
 
 
-    Route::get('/profile', [ProfileController::class, "show"])->name('profile');
+    Route::get('/users/{user}', [ProfileController::class, "show"])->name('profile.show');
     Route::get('/profileEdit', [ProfileController::class, "edit"])->name('profileEdit');
 
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
@@ -27,7 +27,7 @@ Route::middleware(['is_auth'])->group(function () {
     Route::post('/SubmitComments/{post}', [CommentController::class, 'store'])->name('AddComment');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
-    Route::post('/like/{post}' , [LikeController::class, 'store'])->name('like');
+    Route::post('/like/{post}' , [LikeController::class, 'toggle'])->name('like');
 
 
 
