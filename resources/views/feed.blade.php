@@ -195,89 +195,112 @@
                             <span
                                 class="w-4 h-4 rounded-full bg-[#e7a33e] flex items-center justify-center text-white text-[9px]">❤</span>
                         </span>
-                        24
+                        {{ count($post->likes) }}
                     </span>
                     <span>{{ count($post->comments) }} Comments</span>
                 </div>
 
                 <div
                     class="grid grid-cols-4 mt-1 pt-1 border-t border-[rgba(0,0,0,0.08)] text-sm font-medium text-[rgba(0,0,0,0.6)]">
-                    <button
-                        class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
-                        </svg>
-                        <span class="hidden sm:inline">Like</span>
-                    </button>
-                    <button type="button" onclick="toggleComments({{ $post->id }})"
-                        class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path
-                                d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
-                        </svg>
-                        <span class="hidden sm:inline">Comment</span>
-                    </button>
-                    <button
-                        class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3" />
-                        </svg>
-                        <span class="hidden sm:inline">Repost</span>
-                    </button>
-                    <button
-                        class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" />
-                        </svg>
-                        <span class="hidden sm:inline">Send</span>
-                    </button>
-                    <div class="mt-3 space-y-2 ">
-                        @foreach ($post->comments as $comment)
-                            <div class="flex items-start gap-2">
-                                <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/80' }}"
-                                    alt="" class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
-                                <div class="bg-[rgba(0,0,0,0.05)] rounded-2xl px-3 py-2 text-sm flex">
-                                    <div>
-                                        <p class="font-semibold text-xs">{{ $comment->user->name }}</p>
-                                        <p>{{ $comment->content }}</p>
+                    <form action="{{ route('like', $post) }}" method="POST">
+                        @csrf
 
-                                    </div>
+                        <button type="submit" class="w-full">
+                            @if ($post->likes->contains('user_id', auth()->id()))
+                                <div
+                                    class="flex items-center justify-center bg-blue-200 gap-1.5 py-2 rounded-md hover:bg-[rgba(11,32,224,0.08)] transition">
 
-                                    <div>
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+                                    </svg>
+                                    <span class="hidden sm:inline ">Like</span>
+                                @else
+                                    <div
+                                        class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
 
-                                        {{-- @can('update', $post) --}}
-                                        @can('delete' , $comment)
-                                            <div class="relative comment-menu">
-                                                <button type="button" onclick="toggleCommentMenu(this)"
-                                                    class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
-                                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24"
-                                                        stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="5" r="1" />
-                                                        <circle cx="12" cy="12" r="1" />
-                                                        <circle cx="12" cy="19" r="1" />
-                                                    </svg>
-                                                </button>
-    
-                                                <div
-                                                    class="comment-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
-                                                    
-                                                        
-                                                    
-                                                    <form action="{{ route('comments.destroy', $comment) }}" method="POST"
-                                                        onsubmit="return confirm('Supprimer ce commentaire ?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
-                                                            Supprimer
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        @endcan
-                                    </div>
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path
+                                                d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z" />
+                                        </svg>
+                                        <span class="hidden sm:inline ">Like</span>
+                            @endif
+
+                </div>
+                </button>
+
+                </form>
+                <button type="button" onclick="toggleComments({{ $post->id }})"
+                    class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" />
+                    </svg>
+                    <span class="hidden sm:inline">Comment</span>
+                </button>
+                <button type="button"
+                    class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M17 1l4 4-4 4M3 11V9a4 4 0 014-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 01-4 4H3" />
+                    </svg>
+                    <span class="hidden sm:inline">Repost</span>
+                </button>
+                <button type="button"
+                    class="flex items-center justify-center gap-1.5 py-2 rounded-md hover:bg-[rgba(0,0,0,0.08)] transition">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13" />
+                    </svg>
+                    <span class="hidden sm:inline">Send</span>
+                </button>
+                <div class="mt-3 space-y-2 ">
+                    @foreach ($post->comments as $comment)
+                        <div class="flex items-start gap-2">
+                            <img src="{{ $comment->user->image_url ?? 'https://via.placeholder.com/80' }}" alt=""
+                                class="w-8 h-8 rounded-full object-cover shrink-0 bg-[#0a66c2]">
+                            <div class="bg-[rgba(0,0,0,0.05)] rounded-2xl px-3 py-2 text-sm flex">
+                                <div>
+                                    <p class="font-bold text-black text-xs">{{ $comment->user->name }}</p>
+                                    <p>{{ $comment->content }}</p>
+
                                 </div>
-                                {{-- @can('delete', $comment)
+
+                                <div>
+
+                                    {{-- @can('update', $post) --}}
+                                    @can('delete', $comment)
+                                        <div class="relative comment-menu">
+                                            <button type="button" onclick="toggleCommentMenu(this)"
+                                                class="text-[rgba(0,0,0,0.6)] hover:bg-[rgba(0,0,0,0.08)] rounded-full p-1.5 transition">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="5" r="1" />
+                                                    <circle cx="12" cy="12" r="1" />
+                                                    <circle cx="12" cy="19" r="1" />
+                                                </svg>
+                                            </button>
+
+                                            <div
+                                                class="comment-menu-dropdown hidden absolute right-0 mt-1 w-36 bg-white border border-[rgba(0,0,0,0.08)] rounded-lg shadow-lg z-10 py-1">
+
+
+
+                                                <form action="{{ route('comments.destroy', $comment) }}" method="POST"
+                                                    onsubmit="return confirm('Supprimer ce commentaire ?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                                        Supprimer
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    @endcan
+                                </div>
+                            </div>
+                            {{-- @can('delete', $comment)
                                 <form action="{{ route('comments.destroy', $comment) }}" method="POST"
                                     onsubmit="return confirm('Supprimer ce commentaire ?');">
                                     @csrf
@@ -288,9 +311,9 @@
                                     </button>
                                 </form>
                                 @endcan --}}
-                            </div>
-                        @endforeach
-                    </div>
+                        </div>
+                    @endforeach
+                </div>
                 </div>
 
                 <div id="comment-box-{{ $post->id }}" class="hidden mt-3 pt-3 border-t border-[rgba(0,0,0,0.08)]">
@@ -445,4 +468,3 @@
         });
     </script>
 @endsection
-
