@@ -11,14 +11,20 @@ use App\Models\User;
 class PostController extends Controller
 {
     //
-    public function index()
+    public function index(Request $request)
     {
         // $posts = Post::with('user')->latest()->get();
 
 
+        $query = Post::with(['user' , 'comments.user', 'originalPost.user'])->latest();
+        if($request->filled('company')){
+            $query->whereHas('user' , function($q) use ($request) {
+                $q->where('company' , $request->company);
+            });
+        }
 
+        $posts = $query->get();
 
-        $posts = Post::with(['user' , 'comments.user'])->latest()->get();
 
 
         // return View::make("view")->with(array("user" => $user, "posts" => $posts));

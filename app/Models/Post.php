@@ -13,6 +13,8 @@ class Post extends Model
      protected $fillable = [
         'content',
         'user_id',
+        'original_post_id',
+        'shares_count',
     ];
 
      public function user(): BelongsTo
@@ -28,6 +30,32 @@ class Post extends Model
     public function likes() : HasMany
     {
         return $this->hasMany(Like::class);
+    }
+
+    public function originalPost(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'original_post_id');
+    }
+
+    /**
+     * Tous les reposts qui pointent vers ce post
+     */
+    public function reposts(): HasMany
+    {
+        return $this->hasMany(Post::class, 'original_post_id');
+    }
+
+    public function isRepost(): bool
+    {
+        return $this->original_post_id !== null;
+    }
+
+    /**
+     * Vérifie si $user a déjà reposté ce post précis
+     */
+    public function hasBeenRepostedBy(User $user): bool
+    {
+        return $this->reposts()->where('user_id', $user->id)->exists();
     }
 }
 
