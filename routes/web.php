@@ -56,3 +56,4 @@ Route::middleware(['guest'])->group(function () {
 // Route::get('/feed', function (){
 //     return view('feed');
 // });
+
