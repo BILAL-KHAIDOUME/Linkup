@@ -59,3 +59,4 @@ class Post extends Model
     }
 }
 
+
