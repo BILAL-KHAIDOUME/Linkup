@@ -91,3 +91,4 @@ class User extends Authenticatable
         return $this->savedPosts()->where('post_id', $post->id)->exists();
     }
 }
+
