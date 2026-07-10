@@ -36,3 +36,4 @@ class SavedPostController extends Controller
         return back()->with('success', 'Post retiré de vos éléments sauvegardés.');
     }
 }
+
