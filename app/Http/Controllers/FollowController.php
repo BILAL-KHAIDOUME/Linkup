@@ -32,3 +32,4 @@ class FollowController extends Controller
         return back()->with('success', "Vous ne suivez plus {$user->name}.");
     }
 }
+
